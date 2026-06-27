@@ -21,6 +21,7 @@ export default function ProfilePage() {
 
   const {
     register,
+    profile
     handleSubmit,
     reset,
     formState: { errors },
@@ -29,7 +30,6 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
-   use
     if (user) {
       reset({
         fullName: user.fullName ?? "",
