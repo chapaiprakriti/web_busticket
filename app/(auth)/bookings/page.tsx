@@ -3,7 +3,6 @@
 import Link from "next/link";
 import {
   Home,
-  book
   Ticket,
   Bell,
   User,
@@ -12,6 +11,7 @@ import {
   MapPin,
   Clock,
 } from "lucide-react";
+from
 
 export default function BookingsPage() {
   return (
