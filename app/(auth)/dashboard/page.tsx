@@ -11,11 +11,11 @@ import {
   LogOut,
 } from "lucide-react";
 import { useAuth } from "@/lib/contexts/AuthContext";
+das
 
 export default function DashboardPage() {
   const { user, logout, loading } = useAuth();
-  DashboardPage
-
+ 
   if (loading) {
     return (
       <div className="min-h-screen bg-[#071b38] flex items-center justify-center text-white">
