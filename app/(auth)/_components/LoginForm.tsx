@@ -20,6 +20,7 @@ export default function LoginPage() {
 
   const {
     register,
+    login
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({

@@ -10,6 +10,7 @@ import {
   CheckCircle,
   AlertTriangle,
 } from "lucide-react";
+react
 
 export default function AlertsPage() {
   return
