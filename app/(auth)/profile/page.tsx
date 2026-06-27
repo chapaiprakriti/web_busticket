@@ -29,6 +29,7 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
+   use
     if (user) {
       reset({
         fullName: user.fullName ?? "",

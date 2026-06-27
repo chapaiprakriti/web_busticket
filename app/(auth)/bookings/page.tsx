@@ -14,6 +14,7 @@ import {
 
 export default function BookingsPage() {
   return (
+    return
     <main className="min-h-screen bg-[#071b38] text-white pb-24">
       {/* Header */}
       <div className="bg-[#0d2447] px-5 py-5 border-b border-[#19375f]">
