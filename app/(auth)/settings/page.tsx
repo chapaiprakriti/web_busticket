@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Home, Ticket, Bell, User, Lock } from "lucide-react";
 
 import {
+  settings
   passwordUpdateSchema,
   PasswordUpdateFormData,
 } from "@/app/(auth)/_components/schema";

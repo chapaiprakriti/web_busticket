@@ -14,6 +14,7 @@ import { useAuth } from "@/lib/contexts/AuthContext";
 
 export default function DashboardPage() {
   const { user, logout, loading } = useAuth();
+  DashboardPage
 
   if (loading) {
     return (
