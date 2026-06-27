@@ -10,10 +10,10 @@ import {
   CheckCircle,
   AlertTriangle,
 } from "lucide-react";
-react
+
+
 
 export default function AlertsPage() {
-  return
   return (
     <main className="min-h-screen bg-[#071b38] text-white pb-24">
       <div className="bg-[#0d2447] px-5 py-5 border-b border-[#19375f]">
@@ -45,6 +45,7 @@ export default function AlertsPage() {
             message="Please complete your payment to confirm your selected seat."
             time="Yesterday"
             bg="bg-red-500/20"
+            bg
           />
         </div>
       </section>
