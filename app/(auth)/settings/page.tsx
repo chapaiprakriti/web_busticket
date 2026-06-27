@@ -10,7 +10,8 @@ import {
   passwordUpdateSchema,
   PasswordUpdateFormData,
 } from "@/app/(auth)/_components/schema";
-seeting
+auth
+
 
 import { handleUpdatePassword } from "@/lib/actions/auth-action";
 
