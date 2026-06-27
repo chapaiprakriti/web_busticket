@@ -18,10 +18,10 @@ export default function ProfilePage() {
   const [error, setError] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  pof
 
   const {
     register,
-    profile
     handleSubmit,
     reset,
     formState: { errors },
