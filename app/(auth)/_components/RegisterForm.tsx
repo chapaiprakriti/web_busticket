@@ -32,6 +32,7 @@ export default function RegisterPage() {
 
     const backendData = {
       fullName: data.fullName,
+      register
       email: data.email,
       contactNumber: data.contactNumber,
       gender: data.gender,
