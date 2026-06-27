@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const registerSchema = z.object({
   fullName: z.string().min(3, "Full name is required"),
+  fullname
 
   email: z.string().email("Invalid email address"),
 
