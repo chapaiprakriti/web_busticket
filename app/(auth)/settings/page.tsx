@@ -10,6 +10,7 @@ import {
   passwordUpdateSchema,
   PasswordUpdateFormData,
 } from "@/app/(auth)/_components/schema";
+seeting
 
 import { handleUpdatePassword } from "@/lib/actions/auth-action";
 
@@ -19,7 +20,6 @@ export default function SettingsPage() {
   const [isPending, startTransition] = useTransition();
 
   const {
-    const
     register,
     handleSubmit,
     reset,
