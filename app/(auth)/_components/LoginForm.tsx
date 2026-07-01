@@ -2,25 +2,21 @@
 
 import Link from "next/link";
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Bus, Mail, Lock, Eye } from "lucide-react";
 
 import { LoginFormData, loginSchema } from "@/app/(auth)/_components/schema";
-import { handleLoginUser } from "@/lib/actions/auth-action";
 import { useAuth } from "@/lib/contexts/AuthContext";
 
-export default function LoginPage() {
+export default function LoginForm() {
   const [error, setError] = useState("");
   const [isPending, startTransition] = useTransition();
 
-  const router = useRouter();
-  const { checkAuth } = useAuth();
+  const { login } = useAuth();
 
   const {
     register,
-    login
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
@@ -32,14 +28,7 @@ export default function LoginPage() {
 
     startTransition(async () => {
       try {
-        const result = await handleLoginUser(data);
-
-        if (result.success) {
-          await checkAuth();
-          router.push("/dashboard");
-        } else {
-          setError(result.message || "Login failed");
-        }
+        await login(data);
       } catch (error: any) {
         setError(error?.message || "Login failed");
       }
