@@ -9,7 +9,8 @@ import {
 } from "react";
 import { useRouter } from "next/navigation";
 import { clearAuthCookies } from "@/lib/cookies";
-import { handleWhoAmI } from "@/lib/actions/auth-action";
+import { handleWhoAmI, handleLoginUser } from "@/lib/actions/auth-action";
+import { LoginFormData } from "@/app/(auth)/_components/schema";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
@@ -17,6 +18,7 @@ interface AuthContextProps {
   user: any;
   setUser: (user: any) => void;
   logout: () => Promise<void>;
+  login: (data: LoginFormData) => Promise<void>;
   loading: boolean;
   checkAuth: () => Promise<void>;
 }
@@ -56,6 +58,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     checkAuth();
   }, []);
 
+  const login = async (data: LoginFormData) => {
+    const result = await handleLoginUser(data);
+
+    if (!result.success) {
+      throw new Error(result.message || "Login failed");
+    }
+
+    if (result.data?.user) {
+      setUser(result.data.user);
+      setIsAuthenticated(true);
+    }
+
+    router.push("/dashboard");
+  };
+
   const logout = async () => {
     try {
       await clearAuthCookies();
@@ -80,6 +97,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         user,
         setUser,
         logout,
+        login,
         loading,
         checkAuth,
       }}
