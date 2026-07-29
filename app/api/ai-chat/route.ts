@@ -1,14 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-function isImageContent(message: string): boolean {
-  const trimmed = message.trim();
-  if (trimmed.startsWith("data:image/")) return true;
-  if (trimmed.startsWith("http") && /\.(png|jpe?g|gif|webp|svg|bmp|ico)/i.test(trimmed)) return true;
-  if (/^data:image\/[a-z]+;base64,/.test(trimmed)) return true;
-  if (/\.(png|jpe?g|gif|webp|svg|bmp|ico)\b/i.test(trimmed)) return true;
-  return false;
-}
-
 function getAIReply(userMessage: string): string {
   const msg = userMessage.toLowerCase().trim();
 
@@ -69,16 +60,9 @@ export async function POST(req: NextRequest) {
         { reply: "Please enter a message." },
         { status: 400 }
       );
-    }
+     }
 
-    if (isImageContent(message.trim())) {
-      return NextResponse.json(
-        { reply: "I cannot read images. This model does not support image input. Please describe your question in text instead." },
-        { status: 400 }
-      );
-    }
-
-    const reply = getAIReply(message.trim());
+     const reply = getAIReply(message.trim());
     return NextResponse.json({ reply });
   } catch (error) {
     console.error("AI chat error:", error);
