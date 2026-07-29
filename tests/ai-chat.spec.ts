@@ -5,7 +5,7 @@ test.describe('AI Chat Widget', () => {
     await page.goto('/');
     const chatBtn = page.locator('[data-testid="ai-chat-toggle"], button:has-text("Chat"), button:has-text("AI")');
     await chatBtn.click();
-    await expect(page.locator('[data-testid="ai-chat"], :text("AI"), :text("Assistant"), :text("Seat Sathi")).first()).toBeVisible();
+    await expect(page.locator('[data-testid="ai-chat"], :text("AI"), :text("Assistant"), :text("Seat Sathi")').first()).toBeVisible();
   });
 
   test('AI chat sends text message', async ({ page }) => {
