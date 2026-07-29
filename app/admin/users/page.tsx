@@ -111,7 +111,7 @@ export default function AdminUsersPage() {
   return (
     <div className="min-h-screen bg-[#071b38] text-[#111827]">
       <main className="px-6 md:px-10 py-8">
-        <Link href="/dashboard" className="inline-flex items-center gap-2 text-sm text-orange-400 hover:text-orange-300 mb-5">
+        <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-orange-400 hover:text-orange-300 mb-5">
           <ArrowLeft size={18} />Back to Dashboard
         </Link>
 

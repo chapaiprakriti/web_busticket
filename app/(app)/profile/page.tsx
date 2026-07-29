@@ -3,17 +3,20 @@
 import { useState, useTransition, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User, Phone, Mail, CheckCircle, Lock, Shield } from "lucide-react";
+import { User, Phone, Mail, CheckCircle, Lock, Shield, Bot, MapPin } from "lucide-react";
 import Link from "next/link";
 import { useAuth } from "@/lib/contexts/AuthContext";
 import { handleUpdateProfile } from "@/lib/actions/auth-action";
 import { ProfileUpdateFormData, profileUpdateSchema } from "@/app/(auth)/_components/schema";
+import { storeUserData } from "@/lib/cookies";
+import AIChatWidget from "@/app/_components/AIChatWidget";
 
 export default function ProfilePage() {
-  const { user, checkAuth } = useAuth();
+  const { user, checkAuth, setUser } = useAuth();
   const [isPending, startTransition] = useTransition();
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [avatar, setAvatar] = useState<string | null>(null);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<ProfileUpdateFormData>({
     resolver: zodResolver(profileUpdateSchema),
@@ -22,6 +25,15 @@ export default function ProfilePage() {
   useEffect(() => {
     if (user) reset({ fullName: user.fullName ?? "", contactNumber: user.contactNumber ?? "", gender: user.gender ?? "" });
   }, [user, reset]);
+
+  // Load avatar from localStorage for the logged-in user
+  useEffect(() => {
+    const key = user?.email ? `profile_pic_${user.email}` : null;
+    if (key) {
+      const data = localStorage.getItem(key);
+      if (data) setAvatar(data);
+    }
+  }, [user]);
 
   const onSubmit = (data: ProfileUpdateFormData) => {
     setError(""); setSuccess("");
@@ -38,6 +50,47 @@ export default function ProfilePage() {
 
   const initials = user?.fullName?.split(" ").map((w: string) => w[0]).join("").slice(0, 2).toUpperCase() || "U";
 
+  const handleImageChange = (file?: File) => {
+    if (!file || !user?.email) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const result = reader.result as string;
+      const key = `profile_pic_${user.email}`;
+      try {
+        localStorage.setItem(key, result);
+        setAvatar(result);
+        // update auth user in context and cookie for convenience (non-essential)
+        setUser((prev: any) => {
+          const updated = { ...(prev || {}), avatar: result };
+          try { storeUserData(updated); } catch (e) {}
+          return updated;
+        });
+      } catch (e) {
+        console.error("Failed to save avatar:", e);
+        setError("Unable to save image locally");
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const onFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (f) handleImageChange(f);
+  };
+
+  const removeAvatar = () => {
+    if (!user?.email) return;
+    const key = `profile_pic_${user.email}`;
+    localStorage.removeItem(key);
+    setAvatar(null);
+    setUser((prev: any) => {
+      const updated = { ...(prev || {}) };
+      delete updated.avatar;
+      try { storeUserData(updated); } catch (e) {}
+      return updated;
+    });
+  };
+
   return (
     <div className="min-h-screen bg-[#071b38] px-6 py-12">
       <div className="max-w-lg mx-auto">
@@ -47,10 +100,24 @@ export default function ProfilePage() {
         </div>
 
         <div className="bg-[#0d2447] border border-white/8 rounded-3xl p-8">
-          {/* Avatar — initial letter only */}
-          <div className="flex justify-center mb-7">
-            <div className="w-24 h-24 rounded-2xl bg-[#1a3356] border border-white/10 flex items-center justify-center">
-              <span className="text-3xl font-extrabold text-white">{initials}</span>
+          {/* Avatar area: show avatar if set, otherwise initials; add upload control */}
+          <div className="flex flex-col items-center mb-4">
+            <div className="w-24 h-24 rounded-2xl bg-[#1a3356] border border-white/10 flex items-center justify-center overflow-hidden">
+              {avatar ? (
+                <img src={avatar} alt="Avatar" className="w-full h-full object-cover" />
+              ) : (
+                <span className="text-3xl font-extrabold text-white">{initials}</span>
+              )}
+            </div>
+
+            <div className="mt-3 flex items-center gap-2">
+              <label className="cursor-pointer inline-flex items-center gap-2 bg-[#06172e] border border-white/8 rounded-full px-3 py-2 text-sm text-white">
+                Change Photo
+                <input onChange={onFileInputChange} accept="image/*" type="file" className="hidden" />
+              </label>
+              {avatar && (
+                <button onClick={removeAvatar} className="text-sm text-red-400">Remove</button>
+              )}
             </div>
           </div>
 
@@ -133,9 +200,29 @@ export default function ProfilePage() {
               <p className="text-xs text-gray-500">Update your security settings</p>
             </div>
           </div>
-          <span className="text-gray-500 text-xs">→</span>
+          <span className="text-gray-500 text-xs">&#x2192;</span>
         </Link>
+
+        {/* AI Features */}
+        <div className="mt-6 grid grid-cols-2 gap-4">
+          <Link href="/ai-chat" className="bg-[#0d2447] border border-white/8 hover:border-red-500/25 rounded-2xl p-5 transition-colors group">
+            <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center mb-3 group-hover:bg-red-500/30 transition-colors">
+              <Bot className="text-red-400" size={18} />
+            </div>
+            <p className="font-semibold text-white text-sm">AI Chat</p>
+            <p className="text-xs text-gray-500 mt-1">Ask about routes, fares, bookings</p>
+          </Link>
+          <Link href="/ai-routes" className="bg-[#0d2447] border border-white/8 hover:border-red-500/25 rounded-2xl p-5 transition-colors group">
+            <div className="w-10 h-10 rounded-xl bg-red-500/20 flex items-center justify-center mb-3 group-hover:bg-red-500/30 transition-colors">
+              <MapPin className="text-red-400" size={18} />
+            </div>
+            <p className="font-semibold text-white text-sm">AI Route Planner</p>
+            <p className="text-xs text-gray-500 mt-1">Get smart route suggestions</p>
+          </Link>
+        </div>
       </div>
+
+      <AIChatWidget />
     </div>
   );
 }

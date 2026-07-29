@@ -1,45 +1,29 @@
-"use server";
+import Cookies from "js-cookie";
 
-import { cookies } from "next/headers";
-
-export const setTokenCookie = async (token: string) => {
-  const cookieStore = await cookies();
-
-  cookieStore.set("token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+export const setTokenCookie = (token: string) => {
+  Cookies.set("token", token, {
+    expires: 7,
     path: "/",
-    maxAge: 60 * 60 * 24 * 7,
   });
 };
 
-export const storeUserData = async (user: any) => {
-  const cookieStore = await cookies();
+export const getTokenCookie = () => {
+  return Cookies.get("token");
+};
 
-  cookieStore.set("user", JSON.stringify(user), {
-    httpOnly: false,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+export const removeTokenCookie = () => {
+  Cookies.remove("token", { path: "/" });
+};
+
+export const storeUserData = (user: unknown) => {
+  Cookies.set("user", JSON.stringify(user), {
+    expires: 7,
     path: "/",
-    maxAge: 60 * 60 * 24 * 7,
   });
 };
 
-export const getTokenCookie = async () => {
-  const cookieStore = await cookies();
-
-  return (
-    cookieStore.get("token")?.value ||
-    cookieStore.get("auth_token")?.value ||
-    cookieStore.get("accessToken")?.value ||
-    ""
-  );
-};
-
-export const getUserData = async () => {
-  const cookieStore = await cookies();
-  const user = cookieStore.get("user")?.value;
+export const getUserData = () => {
+  const user = Cookies.get("user");
 
   if (!user) return null;
 
@@ -50,11 +34,11 @@ export const getUserData = async () => {
   }
 };
 
-export const clearAuthCookies = async () => {
-  const cookieStore = await cookies();
+export const removeUserData = () => {
+  Cookies.remove("user", { path: "/" });
+};
 
-  cookieStore.delete("token");
-  cookieStore.delete("auth_token");
-  cookieStore.delete("accessToken");
-  cookieStore.delete("user");
+export const clearAuthCookies = () => {
+  removeTokenCookie();
+  removeUserData();
 };

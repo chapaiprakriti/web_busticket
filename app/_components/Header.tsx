@@ -70,6 +70,18 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/ai-chat"
+            className="text-sm font-medium transition-colors text-gray-400 hover:text-white"
+          >
+            AI Chat
+          </Link>
+          <Link
+            href="/ai-routes"
+            className="text-sm font-medium transition-colors text-gray-400 hover:text-white"
+          >
+            AI Routes
+          </Link>
         </nav>
 
         {/* Right side */}

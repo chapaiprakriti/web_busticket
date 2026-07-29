@@ -17,6 +17,7 @@ node_modules/
 # misc
 .DS_Store
 *.pem
+/playwright-report/
 
 # debug
 npm-debug.log*
