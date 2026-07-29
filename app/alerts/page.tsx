@@ -45,7 +45,7 @@ export default function AlertsPage() {
             message="Please complete your payment to confirm your selected seat."
             time="Yesterday"
             bg="bg-red-500/20"
-            bg
+            
           />
         </div>
       </section>
@@ -94,7 +94,7 @@ function BottomNav({ active }: { active: "home" | "booking" | "alerts" | "profil
           <span className="text-xs mt-1">Home</span>
         </Link>
 
-        <Link href="/booking" className={`flex flex-col items-center justify-center ${active === "booking" ? "text-orange-400" : "text-gray-400"}`}>
+        <Link href="/bookings" className={`flex flex-col items-center justify-center ${active === "booking" ? "text-orange-400" : "text-gray-400"}`}>
           <Ticket size={22} />
           <span className="text-xs mt-1">Booking</span>
         </Link>

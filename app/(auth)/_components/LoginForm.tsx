@@ -78,9 +78,9 @@ export default function LoginForm() {
                 PASSWORD
               </label>
 
-              <a href="#" className="text-xs text-red-500">
+              <Link href="/forgot-password" className="text-xs text-red-500 hover:underline">
                 Forgot Password?
-              </a>
+              </Link>
             </div>
 
             <div className="bg-[#06172e] rounded-lg flex items-center px-4 py-3 mb-2">
@@ -114,16 +114,7 @@ export default function LoginForm() {
             </button>
           </form>
 
-          <div className="flex items-center gap-3 my-6">
-            <div className="flex-1 h-px bg-[#19375f]" />
-            <span className="text-[10px] text-gray-500">OR CONTINUE WITH</span>
-            <div className="flex-1 h-px bg-[#19375f]" />
-          </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <button className="bg-[#06172e] py-3 rounded-lg text-xs">Google</button>
-            <button className="bg-[#06172e] py-3 rounded-lg text-xs">Apple</button>
-          </div>
         </div>
 
         <p className="mt-6 text-sm text-gray-400">
@@ -132,6 +123,8 @@ export default function LoginForm() {
             Sign Up
           </Link>
         </p>
+
+
       </div>
     </div>
   );

@@ -1,0 +1,24 @@
+FROM node:20-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm ci
+
+ARG NEXT_PUBLIC_API_BASE_URL=http://bus-ticketing-ouxm.onrender.com
+ARG RESEND_API_KEY
+ARG KHALTI_SECRET_KEY
+ENV NEXT_PUBLIC_API_BASE_URL=$NEXT_PUBLIC_API_BASE_URL
+ENV RESEND_API_KEY=$RESEND_API_KEY
+ENV KHALTI_SECRET_KEY=$KHALTI_SECRET_KEY
+
+ENV NODE_ENV=production
+ENV PORT=3000
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "run", "start"]

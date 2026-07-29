@@ -1,31 +1,21 @@
 import axios from "axios";
+import { getTokenCookie } from "@/lib/cookies";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
-
-const axiosInstance = axios.create({
-  baseURL: BASE_URL,
+const api = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://bus-ticketing-ouxm.onrender.com",
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-// Add token automatically in every request
-axiosInstance.interceptors.request.use(
-  (config) => {
-    if (typeof window !== "undefined") {
-      const token = localStorage.getItem("token");
+api.interceptors.request.use((config) => {
+  const token = getTokenCookie();
 
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
 
-export default axiosInstance;
+  return config;
+});
+
+export default api;
