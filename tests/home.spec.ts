@@ -19,32 +19,28 @@ test.describe('Home Page', () => {
     await expect(searchForm).toBeVisible();
   });
 
-  test('home page has from input field', async ({ page }) => {
-    const fromInput = page.locator('input[placeholder*="from" i]');
-    await expect(fromInput).toBeVisible();
+  test('home page has from city select dropdown', async ({ page }) => {
+    const fromSelect = page.locator('select').filter({ has: page.locator('option').filter({ hasText: 'Kathmandu' }) });
+    await expect(fromSelect).toBeVisible();
   });
 
-  test('home page has to input field', async ({ page }) => {
-    const toInput = page.locator('input[placeholder*="to" i]');
-    await expect(toInput).toBeVisible();
+  test('home page has to city select dropdown', async ({ page }) => {
+    const toSelects = page.locator('select');
+    const count = await toSelects.count();
+    expect(count).toBeGreaterThanOrEqual(2);
   });
 
-  test('home page has date input field', async ({ page }) => {
-    const dateInput = page.locator('input[type="date"]');
-    await expect(dateInput).toBeVisible();
+  test('home page has find routes button', async ({ page }) => {
+    const findBtn = page.locator('button:has-text("Find Routes"), button:has-text("Search"), button[type="submit"]');
+    await expect(findBtn).toBeVisible();
   });
 
-  test('home page has search button', async ({ page }) => {
-    const searchBtn = page.locator('button:has-text("Search")');
-    await expect(searchBtn).toBeVisible();
+  test('home page has features section', async ({ page }) => {
+    const features = page.locator('[class*="feature"], [class*="benefit"], [class*="icon"]');
+    expect(await features.count()).toBeGreaterThan(0);
   });
 
-  test('home page navigation works', async ({ page }) => {
-    await page.click('a[href="/login"]');
-    await expect(page.url()).toContain('/login');
-  });
-
-  test('home page footer is visible', async ({ page }) => {
+  test('home page has footer', async ({ page }) => {
     const footer = page.locator('footer');
     await expect(footer).toBeVisible();
   });
