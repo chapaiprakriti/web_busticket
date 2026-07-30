@@ -60,9 +60,9 @@ export async function POST(req: NextRequest) {
         { reply: "Please enter a message." },
         { status: 400 }
       );
-     }
+    }
 
-     const reply = getAIReply(message.trim());
+    const reply = getAIReply(message.trim());
     return NextResponse.json({ reply });
   } catch (error) {
     console.error("AI chat error:", error);

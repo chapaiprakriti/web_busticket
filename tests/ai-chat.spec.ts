@@ -27,7 +27,7 @@ test.describe('AI Chat Widget', () => {
 
   test('home page city cards or listings shown', async ({ page }) => {
     await page.goto('/');
-    const content = page.locator('text=Kathmandu, text=Pokhara, text=Chitwan');
+    const content = page.locator('text=Kathmandu').first();
     expect(await content.count()).toBeGreaterThan(0);
   });
 });
